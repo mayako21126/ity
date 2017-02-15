@@ -24,26 +24,30 @@ export default function () {
        ticket:[{
          title:'学生票',
          titleContent:'祖国的花朵？？',
-         titlePrice:'36'
+         titlePrice:'36',
+         type:1,
+         select:true
        },{
          title:'成人票',
          titleContent:'祖国的花朵？？',
-         titlePrice:'48'
+         titlePrice:'48',
+         type:2,
+         select:false
        }],
        price:'36'
   }}
 
   });
-  Mock.mock('http://getlist0','get',{
+  Mock.mock('http://order','post',{
 
-    'result|10':[
+    'result':
       {
-        'name'    : '@name',
-        'date|1-364': 1,
-        'color'    : '@color',
-        'sta' : 0
+        'title'    : '@name',
+        'type': 1,
+        'price'    : '36',
+        'num' : 1
       }
-    ]
+
 
   });
   Mock.mock('http://getlist1','get',{

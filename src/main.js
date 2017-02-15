@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Main from './main.vue'
 import info from './components/info.vue'
+import pay from './components/pay.vue'
+import qr from './components/qr.vue'
+import myTicket from './components/myTicket.vue'
+import orderInfo from './components/orderInfo.vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import 'amazeui/dist/css/amazeui.css'
@@ -17,7 +21,13 @@ var router = new VueRouter({
   mode: 'history',
   routes: [
     {path: '/', redirect: '/info'},
-    { path: '/info',name:'首页', component:info}
+    { path: '/info',name:'首页', component:info},{
+      path: '/orderInfo',name:'订单详情', component:orderInfo
+    },
+    { path: '/pay',name:'支付结果', component:pay},
+    { path: '/qr',name:'二维码', component:qr},
+    { path: '/myTicket',name:'我的票务', component:myTicket}
+
   ]
 })
 //路由切换前后钩子函数
