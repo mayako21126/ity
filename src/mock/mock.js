@@ -11,11 +11,11 @@ export default function () {
        [
         {
           'name'    : '@name',
-          'src': 'http://localhost:8081/ffa/src/assets/i/img_2748.png'
+          'src': 'http://192.168.1.8:8081/ffa/src/assets/i/img_2748.png'
         },
        {
          'name'    : '@name',
-         'src': 'http://localhost:8081/ffa/src/assets/i/img_2749.png'
+         'src': 'http://192.168.1.8:8081/ffa/src/assets/i/img_2749.png'
        }
       ],
        title:'[国家地理]无锡万象城站',

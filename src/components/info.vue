@@ -39,9 +39,7 @@
       <p style="line-height: 25.6px;"><span style="font-size: 12px;">《国家地理》，对于大多数人来说，绝对不只是一本杂志那么简单，它更像一个浓缩的世界，将你触碰不到的领域，一一展现在你的眼前。　</span>
       </p>
 
-      <p style="line-height: 25.6px;"><img style="line-height: 25.6px;" width="100%"
-                                           data-src="http://read.html5.qq.com/image?src=forum&amp;q=5&amp;r=0&amp;imgflag=7&amp;imageUrl=http://mmbiz.qpic.cn/mmbiz_png/GKwgbw8MQUgvVsDQD6HfiaZkb8zcib2FAjzNsice0atw4nrdgNp5rzIrtOibjruUegJXfnY0Iww0n5STjx1iccBUEPA/0?wx_fmt=png"
-                                           src="http://read.html5.qq.com/image?src=forum&amp;q=5&amp;r=0&amp;imgflag=7&amp;imageUrl=http://mmbiz.qpic.cn/mmbiz_png/GKwgbw8MQUgvVsDQD6HfiaZkb8zcib2FAjzNsice0atw4nrdgNp5rzIrtOibjruUegJXfnY0Iww0n5STjx1iccBUEPA/0?wx_fmt=png"><span
+      <p style="line-height: 25.6px;"><img style="line-height: 25.6px;" width="100%" src="http://pic.iranshao.com/photo/image/%E5%9B%BE%E7%89%871-5009bb232c6c266fd7692ab9549a8821.png"><span
         style="font-size: 12px; line-height: 19.2px;">而这一次的展览，更像是一次故事的诉说，将照片中的每一个故事娓娓道来，而你就会发现，你与世界，只有一副影像的距离。</span>
       </p>
     </div>

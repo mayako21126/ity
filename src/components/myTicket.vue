@@ -22,7 +22,7 @@
             <span style="float: right;padding-right: 20px" v-text="days"></span>
           </div>
         </div>
-        <div style="color: #32a1ff;font-size: 14px;text-align: center;height: 33px;background-color: white;line-height: 33px">点击显示二维码>></div>
+        <div style="color: #32a1ff;font-size: 14px;text-align: center;height: 33px;background-color: white;line-height: 33px"><router-link to="qr">点击显示二维码>></router-link></div>
       </div>
 
     </div>

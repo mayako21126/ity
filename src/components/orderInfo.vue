@@ -45,9 +45,30 @@
 <script type="text/ecmascript-6">
 export default {
   data () {
+    return {
+      price:'',
+      num:'',
+      title:'',
+      type:''
+    }
   },
   mounted: function () {
     this.$nextTick(function () {
+      this.$http.post("http://order", {'type': 1}).then(
+        (successData)=>
+      {
+        this.price =  successData.body.result.price;
+        this.num =  successData.body.result.num;
+        this.title =  successData.body.result.title;
+        this.type =  successData.body.result.type;
+
+      }
+      ,
+      (fileData)=>
+      {
+        console.log(fileData);
+      }
+      );
 
     })
   }
