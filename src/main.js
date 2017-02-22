@@ -15,6 +15,7 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 
 Vue.http.options.emulateJSON = true
+Vue.http.options.emulateHTTP = true;
 
 //hash路由开启
 var router = new VueRouter({

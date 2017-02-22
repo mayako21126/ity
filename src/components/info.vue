@@ -5,7 +5,7 @@
            style="margin-bottom: 0px">
         <ul class="am-slides" id="slides">
 
-          <li v-for="(img,index) in imgList"><span>{{index+1}}/{{imgList.length}}</span><img :src="img.src"/></li>
+          <li v-for="(img,index) in imgList"><span>{{index+1}}/{{imgList.length}}</span><img :src="img.src" height="256"/></li>
         </ul>
       </div>
       <div style="width: 100%;height: 60px; background-color: rgba(0,0,0,0.5);position: absolute;bottom: 0px;"
@@ -17,7 +17,7 @@
         <div style="float: left;text-overflow: ellipsis;width: 100%;height: 20px;line-height: 20px;padding-left: 20px;"
              class="titleInfo">
           <span v-text="titleInfo"></span>
-          <span style="float: right;padding-right: 20px" v-text="days"></span>
+          <span style="float: right;padding-right: 20px" v-text="days+'天后结束'"></span>
         </div>
       </div>
     </div>
@@ -27,21 +27,8 @@
       <span class="triangle-down"
             style="position: absolute;bottom: -8px; left: calc(50% - 8px);right: calc(50% - 8px);"></span>
     </div>
-    <div class="am-u-sm-12" style="padding: 20px;font-size: 14px">
-      <blockquote class="yead_editor yead-selected" data-author="Wxeditor"
-                  style="margin: 5px auto; padding-left: 0px; border: 0px; white-space: normal; font-size: 14px;">
-        <section style="padding: 10px; line-height: normal; background: rgb(243, 243, 243);">
-          <h3 class="yead_bdlc"
-              style="margin-right: 12px; padding-left: 10px; font-weight: 700; font-size: 14px; display: inline-block;margin: 0px; border-left-width: 4px; border-left-style: solid; border-left-color: rgb(255, 203, 21); color: rgb(51, 51, 51); line-height: 20px;">
-            国家地理时空走廊</h3>
-        </section>
-      </blockquote>
-      <p style="line-height: 25.6px;"><span style="font-size: 12px;">《国家地理》，对于大多数人来说，绝对不只是一本杂志那么简单，它更像一个浓缩的世界，将你触碰不到的领域，一一展现在你的眼前。　</span>
-      </p>
+    <div class="am-u-sm-12" style="padding: 20px;font-size: 14px" v-html="contentHtml">
 
-      <p style="line-height: 25.6px;"><img style="line-height: 25.6px;" width="100%" src="http://pic.iranshao.com/photo/image/%E5%9B%BE%E7%89%871-5009bb232c6c266fd7692ab9549a8821.png"><span
-        style="font-size: 12px; line-height: 19.2px;">而这一次的展览，更像是一次故事的诉说，将照片中的每一个故事娓娓道来，而你就会发现，你与世界，只有一副影像的距离。</span>
-      </p>
     </div>
     <div class="am-u-sm-12"
          style="height: 40px;background-color: #ececec;line-height: 40px;text-align: center;font-size: 14px;color: #555555;">
@@ -53,12 +40,12 @@
     <div class="am-u-sm-12" id="ticketDiv">
       <div class="ticketInfo" v-for="item in ticket" style="width: 100%;float: left">
         <div style="padding-bottom: 10px;float: left;width: 100%">
-          <span class="ticketTitle" style="float: left" v-text="item.title"></span> <span class="ticketPrice"
+          <span class="ticketTitle" style="float: left" v-text="item.name"></span> <span class="ticketPrice"
                                                                                           style="float: right"
-                                                                                          v-text="'¥'+item.titlePrice"></span>
+                                                                                          v-text="'¥'+item.price"></span>
         </div>
         <div style="padding-bottom: 10px;border-bottom: 1px solid rgba(115,115,115,0.5);float: left;width: 100%">
-          <span class="ticketContent" style="float: left">为了祖国的花朵</span>
+          <span class="ticketContent" style="float: left" v-text="item.detailTxt"></span>
         </div>
       </div>
 
@@ -82,7 +69,7 @@
         <div>
           <div class="am-modal-hd" >选择票种</div>
           <div class="am-modal-bd">
-            <button type="button" class="am-btn am-btn-default am-radius ticketType" v-bind:class="{'select-btn' : item.select}" v-for="(item,index) in ticket" v-text="item.title" @click="selectType(index,item.type)"></button>
+            <button type="button" class="am-btn am-btn-default am-radius ticketType" v-bind:class="{'select-btn' : item.select}" v-for="(item,index) in ticket" v-text="item.name" @click="selectType(index,item.ticketID)"></button>
           </div>
         </div>
         <div>
@@ -101,7 +88,8 @@
 
 <script type="text/babel">
   import $ from 'jquery'
-
+  import { apis } from '../assets/js/app'
+  console.log(apis)
 
   export default {
     data () {
@@ -117,7 +105,9 @@
         num: 1,
         picked:"",
         type:-1,
-        active:-1
+        active:-1,
+        contentHtml:'',
+        pay:{}
       }
     },
     computed: {
@@ -132,11 +122,13 @@
     },
     methods: {
       orderStaChange: function () {
+        console.log('xxx')
         $('#my-alert').modal('close');
         var self = this ;
         setTimeout(function(){
-          self.$router.push('orderInfo')
-        },200)
+          console.log(self.pay)
+          self.$router.push({ path: 'orderInfo', query: self.pay})
+        },50)
        // this.$router.push('orderInfo')
 
       },
@@ -152,20 +144,47 @@
           i.select= false
         }
         this.ticket[index].select = true;
-        console.log(this.ticket[index])
+        this.pay.name=this.ticket[index].name;
+        this.pay.detailTxt=this.ticket[index].detailTxt;
+        this.pay.price=this.ticket[index].price;
+        this.pay.ticketID=this.ticket[index].ticketID;
+        this.pay.totalNum=this.ticket[index].totalNum;
+        this.pay.num=this.num;
+        console.log(this.pay)
       }
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.$http.get("http://img", {'type': 1}).then(
+        this.$http.post(apis+'api_user.aspx', {'type': 1001,'ExhibitionID':26}).then(
           (successData)=>
         {
-          this.imgList = successData.body.result.imgList;
-          this.title = successData.body.result.title;
-          this.titleInfo = successData.body.result.titleInfo;
-          this.days = successData.body.result.days;
-          this.ticket = successData.body.result.ticket;
-          this.price = successData.body.result.price
+          console.log(successData)
+          var res = JSON.parse(successData.bodyText)
+          console.log(res)
+          this.imgList = res.data[0].ImgList;
+          this.title = res.data[0].Name;
+          this.titleInfo = res.data[0].Address;
+          this.price = res.data[0].ticket[0].Price;
+          var date1 = new Date(res.data[0].BeginTime)
+          var date2 = new Date(res.data[0].EndTime)
+          var date3 = date2 -date1;
+          this.days = Math.floor(date3/(24*3600*1000));
+          this.contentHtml = res.data[0].DetailTxt
+          console.log(this);
+          for(var i =0;i<res.data[0].ticket.length;i++){
+            var obj=res.data[0].ticket;
+            var select=false;
+            if(i==0){
+              select=true;
+            }
+            this.ticket.push({name:obj[i].Name,price:obj[i].Price,ticketID:obj[i].TicketID,detailTxt:obj[i].DetailTxt,select:select,totalNum:obj[i].TotalNum})
+          }
+          this.pay.name=this.ticket[0].name;
+          this.pay.detailTxt=this.ticket[0].detailTxt;
+          this.pay.price=this.ticket[0].price;
+          this.pay.ticketID=this.ticket[0].ticketID;
+          this.pay.totalNum=this.ticket[0].totalNum;
+          this.pay.num=this.num;
         }
         ,
         (fileData)=>

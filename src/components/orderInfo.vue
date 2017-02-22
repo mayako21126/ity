@@ -9,9 +9,9 @@
     <div class="am-u-sm-12" style="padding-top: 20px;padding-bottom: 20px;padding-left:20px;padding-right: 20px;">
       <div style="font-size: 14px;color: #323232;width: 100%;border-bottom: 1px solid rgba(115, 115, 115, 0.6);height: 106px;">
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">名称:</div>
-        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="title"></div>
+        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="name"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">票种:</div>
-        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="type"></div>
+        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="ticketID"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">票价:</div>
         <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="price"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">数量:</div>
@@ -48,27 +48,35 @@ export default {
     return {
       price:'',
       num:'',
-      title:'',
-      type:''
+      name:'',
+      ticketID:''
     }
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.$http.post("http://order", {'type': 1}).then(
-        (successData)=>
-      {
-        this.price =  successData.body.result.price;
-        this.num =  successData.body.result.num;
-        this.title =  successData.body.result.title;
-        this.type =  successData.body.result.type;
+      if(this.$route.query.length!=0){
+        this.price =  this.$route.query.price;
+        this.num =  this.$route.query.num;
+        this.name =  this.$route.query.name;
+        this.ticketID =  this.$route.query.ticketID;
+      }else{
+        this.$http.post("http://order", {'type': 1}).then(
+          (successData)=>
+        {
+          this.price =  successData.body.result.price;
+          this.num =  successData.body.result.num;
+          this.name =  successData.body.result.title;
+          this.ticketID =  successData.body.result.type;
 
-      }
+        }
       ,
-      (fileData)=>
-      {
-        console.log(fileData);
-      }
+        (fileData)=>
+        {
+          console.log(fileData);
+        }
       );
+      }
+
 
     })
   }
