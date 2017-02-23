@@ -1,7 +1,9 @@
 <template>
   <div class="am-g-collapse">
+    <div style="height: 100vh;width: 100%;text-align: center;vertical-align: middle;" v-if="loading">载入中</div>
+    <div v-else>
     <div class="am-u-sm-12"
-         style="height: 40px;background-color: #ececec;line-height: 40px;text-align: center;font-size: 14px;color: #555555;">
+         style="height: 40px;background-color: #ececec;line-height: 40px;text-align: center;font-size: 14px;color: #555555;" >
       订单详情
       <span class="triangle-down"
             style="position: absolute;bottom: -8px; left: calc(50% - 8px);right: calc(50% - 8px);"></span>
@@ -35,25 +37,68 @@
       <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;"></div>
     </div>
     <div class="am-u-sm-12 footer" style="z-index: 1300;background-color: #87c247;color: white;height: 60px;line-height: 60px;text-align: center">
-       <router-link to="pay"> <span style="color: white;">微信安全支付</span></router-link>
+       <a @click="pay"> <span style="color: white;">微信安全支付</span></a>
     </div>
-
+    </div>
 
 
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import $ from 'jquery'
+  import wx from 'weixin-js-sdk'
+  import {wxready,apis} from '../assets/js/app'
 export default {
   data () {
     return {
       price:'',
       num:'',
       name:'',
-      ticketID:''
+      ticketID:'',
+      loading:true
     }
+  },
+  methods:{
+    pay: function pay() {
+    $.post("http://wx.lanhai-tech.com/test_weixin_zhifu/weixin_zhifu.aspx", {
+      TicketID: this.ticketID,
+      Num: this.num,
+      Money:this.price*100,
+      TicketName:this.name
+    }, function (res) {
+      //alert(res);
+      //res = res.body;
+      //alert(JSON.stringify(res))
+      res = JSON.parse(res);
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId": res.appId,     //公众号名称，由商户传入
+          "timeStamp": res.timeStamp,        //时间戳，自1970年以来的秒数
+          "nonceStr": res.nonceStr, //随机串
+          "package": "prepay_id=" + res.transNo,
+          "signType": "MD5",         //微信签名方式：
+          "paySign": res.paySign //微信签名
+        },
+        function (res) {
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+            alert('成功')
+            console.log('success')
+          } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+            alert('用户取消支付')
+
+          } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+            alert('支付失败')
+          }
+          // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+        }
+      );
+
+    });
+  }
   },
   mounted: function () {
     this.$nextTick(function () {
+      wxready(this,wx);
       if(this.$route.query.length!=0){
         this.price =  this.$route.query.price;
         this.num =  this.$route.query.num;

@@ -155,7 +155,7 @@
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.$http.post(apis+'api_user.aspx', {'type': 1001,'ExhibitionID':26}).then(
+        this.$http.post(apis+'api_user.aspx', {'type': 1001,'ExhibitionID':28}).then(
           (successData)=>
         {
           console.log(successData)

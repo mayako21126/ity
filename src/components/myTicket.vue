@@ -8,21 +8,24 @@
       </div>
     </div>
     <div class="am-u-sm-12" style="padding: 20px;background-color: #ebebf0">
-      <div>
+      <div v-for="(item,index) in ticketList" :class="{gray:item.invalid}" style="margin-bottom: 20px">
         <img src="../assets/i/IMG_2748.png" alt="" width="100%">
         <div style="width: 100%;height: 60px; background-color: rgba(0,0,0,0.5);bottom: 0px; position: relative;margin-top: -60px"
              class="titleDiv">
           <div style="float: left;text-overflow:ellipsis;width: 100%;color: white;    padding-top: 5px;
     padding-left: 20px;" class="title">
-            <span v-text="title" style="color: white"></span>
+            <span v-text="item.Name" style="color: white"></span>
           </div>
           <div style="float: left;text-overflow: ellipsis;width: 100%;height: 20px;line-height: 20px;padding-left: 20px;"
                class="titleInfo">
-            <span v-text="titleInfo"></span>
-            <span style="float: right;padding-right: 20px" v-text="days"></span>
+            <span v-text="item.Name"></span>
+            <span style="float: right;padding-right: 20px" v-text="item.BuyTime"></span>
           </div>
         </div>
-        <div style="color: #32a1ff;font-size: 14px;text-align: center;height: 33px;background-color: white;line-height: 33px"><router-link to="qr">点击显示二维码>></router-link></div>
+        <div style="color: #32a1ff;font-size: 14px;text-align: center;height: 33px;background-color: white;line-height: 33px">
+          <a v-if="item.invalid">已验证或者展览已过期</a>
+          <router-link to="qr" v-else>点击显示二维码>></router-link>
+        </div>
       </div>
 
     </div>
@@ -31,24 +34,32 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import {apis} from '../assets/js/app'
   export default {
     data () {
       return {
-        titleInfo: '上海浦东新区xxxxxx',
-        days: '36',
-        title: '[国家地理]无锡万象城站',
-        type: ''
+       ticketList:[]
       }
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.$http.post("http://order", {'type': 1}).then(
+        this.$http.post(apis+"api_user.aspx", {'type': 1002,start:0,length:5,draw:1}).then(
           (successData)=>
         {
-          this.price = successData.body.result.price;
-          this.num = successData.body.result.num;
-          this.title = successData.body.result.title;
-          this.type = successData.body.result.type;
+          console.log(successData)
+          var data = successData.body.data;
+          for(var i=0;i<data.length;i++){
+            data[i].invalid=false;
+            if(data[i].used==1){
+              data[i].invalid = true;
+            }
+            var d1 = new Date();
+            var d2 = new Date(data[i].CheckTime);
+            if(d1>d2){
+              data[i].invalid = true;
+            }
+          }
+          this.ticketList=data;
 
         }
         ,
@@ -121,7 +132,14 @@
     width: 45px;
     line-height: 12px;
   }
-
+  .gray {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+  }
   .am-modal-hd {
     text-align: left;
     padding-left: 20px;
