@@ -9,7 +9,7 @@
     </div>
     <div class="am-u-sm-12" style="padding: 20px;background-color: #ebebf0">
       <div v-for="(item,index) in ticketList" :class="{gray:item.invalid}" style="margin-bottom: 20px">
-        <img src="../assets/i/IMG_2748.png" alt="" width="100%">
+        <img src="../assets/i/IMG_2748.png" alt="" width="100%" @click="toInfo(item.ID)">
         <div style="width: 100%;height: 60px; background-color: rgba(0,0,0,0.5);bottom: 0px; position: relative;margin-top: -60px"
              class="titleDiv">
           <div style="float: left;text-overflow:ellipsis;width: 100%;color: white;    padding-top: 5px;
@@ -18,13 +18,13 @@
           </div>
           <div style="float: left;text-overflow: ellipsis;width: 100%;height: 20px;line-height: 20px;padding-left: 20px;"
                class="titleInfo">
-            <span v-text="item.Name"></span>
-            <span style="float: right;padding-right: 20px" v-text="item.BuyTime"></span>
+            <span v-text="item.Address"></span>
+            <span style="float: right;padding-right: 20px" v-text="item.days"></span>
           </div>
         </div>
         <div style="color: #32a1ff;font-size: 14px;text-align: center;height: 33px;background-color: white;line-height: 33px">
-          <a v-if="item.invalid">已验证或者展览已过期</a>
-          <router-link to="qr" v-else>点击显示二维码>></router-link>
+          <a v-if="item.invalid" @click="alert(item.CheckTime)">已验证或者展览已过期</a>
+          <a @click="qr(item)" v-else>点击显示二维码>></a>
         </div>
       </div>
 
@@ -41,6 +41,25 @@
        ticketList:[]
       }
     },
+    methods:{
+      toInfo:function(id){
+        this.$router.push({path:'info',query:{id:id}})
+      },
+      alert: function(CheckTime){
+        alert('票已失效！失效时间为'+CheckTime)
+      },
+      qr:function(item){
+        var query={
+          a:item.UserID,
+          b:item.NonceStr,
+          c:item.time_end,
+          d:item.openid,
+          e:item.ID
+        }
+        window.sessionStorage.qr='xx?a='+query.a+'&&b='+query.b+'&&c='+query.c+'&&d='+query.d+'&&e='+query.e
+        this.$router.push('qr')
+      }
+    },
     mounted: function () {
       this.$nextTick(function () {
         this.$http.post(apis+"api_user.aspx", {'type': 1002,start:0,length:5,draw:1}).then(
@@ -50,13 +69,17 @@
           var data = successData.body.data;
           for(var i=0;i<data.length;i++){
             data[i].invalid=false;
-            if(data[i].used==1){
+            if(data[i].used==0){
               data[i].invalid = true;
             }
             var d1 = new Date();
-            var d2 = new Date(data[i].CheckTime);
+            var d2 = new Date(data[i].DeadLine);
             if(d1>d2){
               data[i].invalid = true;
+              data[i].days ='已过期'
+            }else{
+              var date3 = d2 -d1;
+              data[i].days = Math.floor(date3/(24*3600*1000))+'天后结束';
             }
           }
           this.ticketList=data;

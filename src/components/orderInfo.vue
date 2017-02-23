@@ -37,7 +37,8 @@
       <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;"></div>
     </div>
     <div class="am-u-sm-12 footer" style="z-index: 1300;background-color: #87c247;color: white;height: 60px;line-height: 60px;text-align: center">
-       <a @click="pay"> <span style="color: white;">微信安全支付</span></a>
+       <a @click="pay" v-if="paySwitch"> <span style="color: white;">微信安全支付</span></a>
+      <a v-else=""> <span style="color: white;">微信安全支付</span></a>
     </div>
     </div>
 
@@ -55,20 +56,20 @@ export default {
       num:'',
       name:'',
       ticketID:'',
-      loading:true
+      loading:true,
+      paySwitch:true
     }
   },
   methods:{
     pay: function pay() {
-    $.post("http://wx.lanhai-tech.com/test_weixin_zhifu/weixin_zhifu.aspx", {
+      this.paySwitch=false;
+    $.post("../test_weixin_zhifu/weixin_zhifu.aspx", {
       TicketID: this.ticketID,
       Num: this.num,
       Money:this.price*100,
       TicketName:this.name
     }, function (res) {
-      //alert(res);
-      //res = res.body;
-      //alert(JSON.stringify(res))
+      this.paySwitch=true;
       res = JSON.parse(res);
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
@@ -81,8 +82,8 @@ export default {
         },
         function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            alert('成功')
-            console.log('success')
+            alert('支付成功')
+            this.$route.push('myTicket')
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
             alert('用户取消支付')
 
@@ -113,8 +114,7 @@ export default {
           this.name =  successData.body.result.title;
           this.ticketID =  successData.body.result.type;
 
-        }
-      ,
+        },
         (fileData)=>
         {
           console.log(fileData);

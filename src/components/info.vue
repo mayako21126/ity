@@ -17,7 +17,7 @@
         <div style="float: left;text-overflow: ellipsis;width: 100%;height: 20px;line-height: 20px;padding-left: 20px;"
              class="titleInfo">
           <span v-text="titleInfo"></span>
-          <span style="float: right;padding-right: 20px" v-text="days+'天后结束'"></span>
+          <span style="float: right;padding-right: 20px" v-text="days"></span>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
           <div class="am-modal-hd" >选择数量</div>
           <div class="am-modal-bd" style="padding-bottom: 40px;">
             <button type="button" class="am-btn am-btn-danger num-btn" @click="minus">-</button>
-            <input type="text" class="am-form-field am-radius num-input" :value="num"/>
+            <input type="text" class="am-form-field am-radius num-input" v-model="num"/>
             <button type="button" class="am-btn am-btn-danger num-btn" @click="plus">+</button>
           </div>
         </div>
@@ -127,6 +127,7 @@
         var self = this ;
         setTimeout(function(){
           console.log(self.pay)
+          self.pay.num=self.num;
           self.$router.push({ path: 'orderInfo', query: self.pay})
         },50)
        // this.$router.push('orderInfo')
@@ -150,12 +151,12 @@
         this.pay.ticketID=this.ticket[index].ticketID;
         this.pay.totalNum=this.ticket[index].totalNum;
         this.pay.num=this.num;
-        console.log(this.pay)
       }
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.$http.post(apis+'api_user.aspx', {'type': 1001,'ExhibitionID':28}).then(
+        var id=this.$route.query.id||28
+        this.$http.post(apis+'api_user.aspx', {'type': 1001,'ExhibitionID':id}).then(
           (successData)=>
         {
           console.log(successData)
@@ -165,10 +166,14 @@
           this.title = res.data[0].Name;
           this.titleInfo = res.data[0].Address;
           this.price = res.data[0].ticket[0].Price;
-          var date1 = new Date(res.data[0].BeginTime)
-          var date2 = new Date(res.data[0].EndTime)
-          var date3 = date2 -date1;
-          this.days = Math.floor(date3/(24*3600*1000));
+          var d1 = new Date()
+          var d2 = new Date(res.data[0].DeadLine)
+          if(d1>d2){
+            this.days ='已过期'
+          }else{
+            var date3 = d2 -d1;
+            this.days = Math.floor(date3/(24*3600*1000))+'天后结束';
+          }
           this.contentHtml = res.data[0].DetailTxt
           console.log(this);
           for(var i =0;i<res.data[0].ticket.length;i++){

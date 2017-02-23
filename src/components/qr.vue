@@ -3,7 +3,7 @@
     <div class="am-u-sm-12"
          style="padding-top: 20px;padding-bottom: 20px;padding-left:20px;padding-right: 20px;margin-top: 80px;text-align: center">
       <div>
-        <img src="../assets/i/qr.png" class="am-img-thumbnail am-radius" alt="" width="90%">
+        <div id="qrcode" style=""></div>
       </div>
     </div>
     <div class="am-u-sm-12">
@@ -20,6 +20,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import {qr} from '../assets/js/app'
+  let QRCode =qr();
   export default {
     data () {
       return {
@@ -31,22 +33,10 @@
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.$http.post("http://order", {'type': 1}).then(
-          (successData)=>
-        {
-          this.price = successData.body.result.price;
-          this.num = successData.body.result.num;
-          this.title = successData.body.result.title;
-          this.type = successData.body.result.type;
+          var qr =  window.sessionStorage.qr;
+        console.log(qr)
+          new QRCode(document.getElementById("qrcode"),qr);
 
-        }
-        ,
-        (fileData)=>
-        {
-          console.log(fileData);
-        }
-        )
-        ;
 
       })
     }
@@ -64,7 +54,9 @@
   a {
     color: var(--mainColor);
   }
-
+  #qrcode {
+    padding-left: calc(50% - 128px);
+  }
   span {
     @apply --danger-theme;
   }
