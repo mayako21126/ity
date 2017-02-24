@@ -9,7 +9,7 @@
     </div>
     <div class="am-u-sm-12" style="padding: 20px;background-color: #ebebf0">
       <div v-for="(item,index) in ticketList" :class="{gray:item.invalid}" style="margin-bottom: 20px">
-        <img src="../assets/i/IMG_2748.png" alt="" width="100%" @click="toInfo(item.ID)">
+        <img src="../assets/i/IMG_2748.png" alt="" width="100%" >
         <div style="width: 100%;height: 60px; background-color: rgba(0,0,0,0.5);bottom: 0px; position: relative;margin-top: -60px"
              class="titleDiv">
           <div style="float: left;text-overflow:ellipsis;width: 100%;color: white;    padding-top: 5px;
@@ -24,7 +24,7 @@
         </div>
         <div style="color: #32a1ff;font-size: 14px;text-align: center;height: 33px;background-color: white;line-height: 33px">
           <a v-if="item.invalid" @click="alert(item.CheckTime)">已验证或者展览已过期</a>
-          <a @click="qr(item)" v-else>点击显示二维码>></a>
+          <a @click="qr(item)" class="qra" v-else>点击显示二维码>></a>
         </div>
       </div>
 
@@ -113,7 +113,9 @@
   span {
     @apply --danger-theme;
   }
-
+  .qra{
+    color: #32a1ff;
+  }
   .select-btn {
     background-color: #ff5d38;
     border-color: #ff5d38;

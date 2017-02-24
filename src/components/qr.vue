@@ -8,9 +8,10 @@
     </div>
     <div class="am-u-sm-12">
       <div style="margin-top: 40px">
-        <div class="tip" style="float: left;width: 100%;height: 30px"> <span><img src="../assets/i/tip.png" width="16" alt="">温馨提示</span></div>
-        <div style="padding-left: calc(60px + 9%);float: left;width: 100%" >
-          asdasd
+        <div class="tip" style="float: left;width: 100%;height: 30px"> <span><img src="../assets/i/tip.png" width="16" alt=""><label
+          for="">温馨提示</label></span></div>
+        <div style="padding-left: calc(60px + 9%);float: left;width: 100%;padding-right: 10%;font-size: 12px;color: #323232;" >
+          将二维码出示给现场工作人员，扫码后即可入场；此二维码唯一，请截图保管，或者关注i体验微信公众号查看哦～
 
         </div>
       </div>
@@ -70,7 +71,7 @@
 
   }
   .tip span img{
-    vertical-align: text-bottom;
+    vertical-align: middle;
   }
 
 

@@ -7,7 +7,7 @@
                                                            style="vertical-align: text-top">支付成功</span>
       </div>
       <div style="margin-top: 40px">
-        <button type="button" class="am-btn qr-btn am-radius"><router-link to="qr">点击查看二维码</router-link></button>
+        <button type="button" class="am-btn qr-btn am-radius"><router-link to="myTicket">点击查看票务</router-link></button>
       </div>
       <div style="margin-top: 40px;text-align: center;font-size: 12px;color: #323232;">
         如果您离开此页面，<br>可以通过关注公众号来获取二维码
