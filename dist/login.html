@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="index-html">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-type" name="viewport"
+          content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="index">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="../assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content=""/>
+    <script src="//cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.1/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.0/vue-resource.min.js"></script> -->
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+  <style>
+    #container{ position:relative;
+      height: 100vh;    background-color: rgba(55, 55, 55, 0.498039);
+      position: fixed;bottom: 0px;
+      top: 0px;left: 0px;right: 0px;
+      z-index: 99999; }
+    #center{width:84px; height:84px;position:absolute;top:50%;left:50%; margin:-42px 0 0 -42px; }
+  </style>
+    <script>
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]); return null;
+        }
+        var apis ="http://wx.lanhai-tech.com/"
+        function wxready(){
+            var url = location.href.split('#')[0];
+            Vue.http.post(apis + "/WeiXin_GetJSSDK.aspx", {
+                url: url
+            }).then(function (res) {
+                console.log(res)
+                res = res.body
+                res=JSON.parse(res);
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: 'wx6f6347c7f7569287', // 必填，公众号的唯一标识
+                    timestamp: res.Timestamp, // 必填，生成签名的时间戳
+                    nonceStr: res.Noncestr, // 必填，生成签名的随机串
+                    signature: res.Sign,// 必填，签名，见附录1
+                    jsApiList: [
+                        'checkJsApi',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'onMenuShareQQ',
+                        'onMenuShareWeibo',
+                        'onMenuShareQZone',
+                        'hideMenuItems',
+                        'showMenuItems',
+                        'hideAllNonBaseMenuItem',
+                        'showAllNonBaseMenuItem',
+                        'translateVoice',
+                        'startRecord',
+                        'stopRecord',
+                        'onVoiceRecordEnd',
+                        'playVoice',
+                        'onVoicePlayEnd',
+                        'pauseVoice',
+                        'stopVoice',
+                        'uploadVoice',
+                        'downloadVoice',
+                        'chooseImage',
+                        'previewImage',
+                        'uploadImage',
+                        'downloadImage',
+                        'getNetworkType',
+                        'openLocation',
+                        'getLocation',
+                        'hideOptionMenu',
+                        'showOptionMenu',
+                        'closeWindow',
+                        'scanQRCode',
+                        'chooseWXPay',
+                        'openProductSpecificView',
+                        'addCard',
+                        'chooseCard',
+                        'openCard'
+                    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+                wx.ready(function(){
+                    // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+
+                });
+            });
+        }
+        $().ready(function () {
+
+            console.log(location.href);
+            var state=getQueryString("state");
+            var code = getQueryString("code");
+
+            console.log(state)
+            console.log(code)
+            $.get(apis + "/WeiXin_Login.aspx", {
+                state: state, code: code
+            }, function (res) {
+                console.log("gogogo")
+                //res=JSON.parse(res);
+                //wxready()
+                window.location.href = "http://wx.lanhai-tech.com/wx/?#/info";
+            });
+        })
+
+    </script>
+</head>
+    <body>
+       <div id="container">
+         <img src="static/loading.gif"  id="center" alt="">
+       </div>
+    </body>
+</html>
+
+

@@ -1,7 +1,11 @@
 <template>
   <div class="am-g-collapse">
-    <div style="height: 100vh;width: 100%;text-align: center;vertical-align: middle;" v-if="loading">载入中</div>
-    <div v-else>
+    <div style="height: 100vh;width: 100%;text-align: center;vertical-align: middle;    background-color: rgba(55, 55, 55, 0.498039);
+    position: fixed;
+    z-index: 99999;" v-if="loading" >
+      <img src="../assets/i/loading.gif"  id="center" alt="">
+    </div>
+    <div>
     <div class="am-u-sm-12"
          style="height: 40px;background-color: #ececec;line-height: 40px;text-align: center;font-size: 14px;color: #555555;" >
       订单详情
@@ -37,8 +41,8 @@
       <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;"></div>
     </div>
     <div class="am-u-sm-12 footer" style="z-index: 1300;background-color: #87c247;color: white;height: 60px;line-height: 60px;text-align: center">
-       <a @click="pay" v-if="paySwitch"> <span style="color: white;">微信安全支付</span></a>
-      <a v-else=""> <span style="color: white;">微信安全支付</span></a>
+       <a @click="pay" v-if="paySwitch" class="pay-a"> <span style="color: white;">微信安全支付</span></a>
+      <a v-else="" class="pay-a" style="    background-color: gainsboro;"> <span style="color: white;">微信安全支付</span></a>
     </div>
     </div>
 
@@ -63,13 +67,16 @@ export default {
   methods:{
     pay: function pay() {
       this.paySwitch=false;
+      this.loading=true;
+      var self = this;
     $.post("../test_weixin_zhifu/weixin_zhifu.aspx", {
       TicketID: this.ticketID,
       Num: this.num,
       Money:this.price*100,
       TicketName:this.name
     }, function (res) {
-      this.paySwitch=true;
+      self.paySwitch=true;
+      self.loading=false;
       res = JSON.parse(res);
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
@@ -83,7 +90,7 @@ export default {
         function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
             alert('支付成功')
-            this.$route.push('myTicket')
+            self.$router.push('myTicket')
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
             alert('用户取消支付')
 
@@ -100,27 +107,33 @@ export default {
   mounted: function () {
     this.$nextTick(function () {
       wxready(this,wx);
-      if(this.$route.query.length!=0){
-        this.price =  this.$route.query.price;
-        this.num =  this.$route.query.num;
-        this.name =  this.$route.query.name;
-        this.ticketID =  this.$route.query.ticketID;
-      }else{
-        this.$http.post("http://order", {'type': 1}).then(
-          (successData)=>
-        {
-          this.price =  successData.body.result.price;
-          this.num =  successData.body.result.num;
-          this.name =  successData.body.result.title;
-          this.ticketID =  successData.body.result.type;
-
-        },
-        (fileData)=>
-        {
-          console.log(fileData);
-        }
-      );
-      }
+      this.name=window.sessionStorage.name
+      //window.sessionStorage.detailTxt
+      this.price=window.sessionStorage.price
+      this.ticketID=window.sessionStorage.ticketID
+      //window.sessionStorage.totalNum
+      this.num=window.sessionStorage.num
+//      if(this.$route.query.length!=0){
+//        this.price =  this.$route.query.price;
+//        this.num =  this.$route.query.num;
+//        this.name =  this.$route.query.name;
+//        this.ticketID =  this.$route.query.ticketID;
+//      }else{
+//        this.$http.post("http://order", {'type': 1}).then(
+//          (successData)=>
+//        {
+//          this.price =  successData.body.result.price;
+//          this.num =  successData.body.result.num;
+//          this.name =  successData.body.result.title;
+//          this.ticketID =  successData.body.result.type;
+//
+//        },
+//        (fileData)=>
+//        {
+//          console.log(fileData);
+//        }
+//      );
+//      }
 
 
     })
@@ -143,6 +156,7 @@ export default {
   span {
     @apply --danger-theme;
   }
+  #center{width:84px; height:84px;position:absolute;top:50%;left:50%; margin:-42px 0 0 -42px; }
   .select-btn{
     background-color: #ff5d38;
     border-color: #ff5d38;
@@ -167,7 +181,12 @@ export default {
   .ticketType:last-child{
     margin-right: 0px;
   }
+  .pay-a{
+    height: 100%;
+    width: 100%;
+    display: block;
 
+  }
   .am-btn-default:hover, .am-btn-default:focus, .am-btn-default:active, .am-btn-default.am-active, .am-dropdown.am-active .am-btn-default.am-dropdown-toggle {
     background-color: #ff5d38;
     border-color: #ff5d38;

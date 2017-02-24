@@ -128,7 +128,13 @@
         setTimeout(function(){
           console.log(self.pay)
           self.pay.num=self.num;
-          self.$router.push({ path: 'orderInfo', query: self.pay})
+          window.sessionStorage.name=self.pay.name
+          window.sessionStorage.detailTxt=self.pay.detailTxt
+          window.sessionStorage.price=self.pay.price
+          window.sessionStorage.ticketID=self.pay.ticketID
+          window.sessionStorage.totalNum=self.pay.totalNum
+          window.sessionStorage.num=self.pay.num
+          self.$router.push('orderInfo')
         },50)
        // this.$router.push('orderInfo')
 
