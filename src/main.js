@@ -13,10 +13,12 @@ import 'amazeui/dist/js/amazeui.js'
 import './config/config'
 import {directRightUrl} from 'assets/js/app'
 import infiniteScroll from 'vue-infinite-scroll'
+import vueLoading from 'may-vue-loading'
 //引入组件并使用2个模块
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(infiniteScroll)
+Vue.use(vueLoading)
 Vue.http.options.emulateJSON = true
 Vue.http.options.emulateHTTP = true;
 

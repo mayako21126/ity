@@ -38,6 +38,7 @@
     "http-proxy-middleware": "^0.17.2",
     "jquery": "^2.2.3",
     "json-loader": "^0.5.4",
+    "may-vue-loading": "^1.0.0",
     "mockjs": "^1.0.1-beta3",
     "opn": "^4.0.2",
     "ora": "^0.3.0",
