@@ -7,8 +7,8 @@
 我的票务
       </div>
     </div>
-    <div class="am-u-sm-12" style="padding: 20px;background-color: #ebebf0">
-      <div v-for="(item,index) in ticketList" :class="{gray:item.invalid}" style="margin-bottom: 20px">
+    <div class="am-u-sm-12" style="padding: 20px;background-color: #ebebf0" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+      <div v-for="(item,index) in ticketList" :class="{gray:item.invalid}" style="margin-bottom: 20px" >
         <img src="../assets/i/IMG_2748.png" alt="" width="100%" >
         <div style="width: 100%;height: 60px; background-color: rgba(0,0,0,0.5);bottom: 0px; position: relative;margin-top: -60px"
              class="titleDiv">
@@ -27,6 +27,10 @@
           <a @click="qr(item)" class="qra" v-else>点击显示二维码>></a>
         </div>
       </div>
+      <div style="width: 100%;text-align: center">
+        <span  v-if="noMore"> 无更多数据</span>
+        <img src="../assets/i/loading.gif" alt="" v-if="busy" width="25">
+      </div>
 
     </div>
 
@@ -38,10 +42,64 @@
   export default {
     data () {
       return {
-       ticketList:[]
+       ticketList:[],
+        busy:false,
+        draw:1,
+        start:0,
+        total:0,
+        noMore:false
       }
     },
     methods:{
+      loadMore:function(){
+        this.busy=true
+        if(this.noMore == true){
+          this.busy=false;
+          return false
+        }
+        this.$http.post(apis+"api_user.aspx", {'type': 1002,start:this.start,length:5,draw:this.draw}).then(
+          (successData)=>
+        {
+          console.log(successData)
+          this.busy=false;
+          if(successData.body.data.length==0){
+            this.noMore=true;
+            var self = this;
+            window.setTimeout(()=>{this.noMore=false},5000);
+            return false
+          }else{
+            this.noMore=false;
+          }
+          this.start=this.start+successData.body.data.length;
+          var data = successData.body.data;
+          this.total = successData.body.recordsTotal;
+          for(var i=0;i<data.length;i++){
+            data[i].invalid=false;
+            if(data[i].used==0){
+              data[i].invalid = true;
+            }
+            var d1 = new Date();
+            var d2 = new Date(data[i].DeadLine);
+            if(d1>d2){
+              data[i].invalid = true;
+              data[i].days ='已过期'
+            }else{
+              var date3 = d2 -d1;
+              data[i].days = Math.floor(date3/(24*3600*1000))+'天后结束';
+            }
+            this.ticketList.push(data[i])
+          }
+
+
+        }
+        ,
+        (fileData)=>
+        {
+          console.log(fileData);
+        }
+        )
+        ;
+      },
       toInfo:function(id){
         this.$router.push({path:'info',query:{id:id}})
       },
@@ -62,36 +120,38 @@
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.$http.post(apis+"api_user.aspx", {'type': 1002,start:0,length:5,draw:1}).then(
-          (successData)=>
-        {
-          console.log(successData)
-          var data = successData.body.data;
-          for(var i=0;i<data.length;i++){
-            data[i].invalid=false;
-            if(data[i].used==0){
-              data[i].invalid = true;
-            }
-            var d1 = new Date();
-            var d2 = new Date(data[i].DeadLine);
-            if(d1>d2){
-              data[i].invalid = true;
-              data[i].days ='已过期'
-            }else{
-              var date3 = d2 -d1;
-              data[i].days = Math.floor(date3/(24*3600*1000))+'天后结束';
-            }
-          }
-          this.ticketList=data;
-
-        }
-        ,
-        (fileData)=>
-        {
-          console.log(fileData);
-        }
-        )
-        ;
+//        this.$http.post(apis+"api_user.aspx", {'type': 1002,start:this.start,length:5,draw:this.draw}).then(
+//          (successData)=>
+//        {
+//          this.start=this.start+successData.body.data.length;
+//          console.log(successData)
+//          var data = successData.body.data;
+//          this.total = successData.body.recordsTotal;
+//          for(var i=0;i<data.length;i++){
+//            data[i].invalid=false;
+//            if(data[i].used==0){
+//              data[i].invalid = true;
+//            }
+//            var d1 = new Date();
+//            var d2 = new Date(data[i].DeadLine);
+//            if(d1>d2){
+//              data[i].invalid = true;
+//              data[i].days ='已过期'
+//            }else{
+//              var date3 = d2 -d1;
+//              data[i].days = Math.floor(date3/(24*3600*1000))+'天后结束';
+//            }
+//          }
+//          this.ticketList=data;
+//
+//        }
+//        ,
+//        (fileData)=>
+//        {
+//          console.log(fileData);
+//        }
+//        )
+//        ;
 
       })
     }

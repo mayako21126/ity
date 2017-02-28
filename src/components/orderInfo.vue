@@ -15,9 +15,9 @@
     <div class="am-u-sm-12" style="padding-top: 20px;padding-bottom: 20px;padding-left:20px;padding-right: 20px;">
       <div style="font-size: 14px;color: #323232;width: 100%;border-bottom: 1px solid rgba(115, 115, 115, 0.6);height: 106px;">
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">名称:</div>
-        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="name"></div>
+        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="title"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">票种:</div>
-        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="ticketID"></div>
+        <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="name"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">票价:</div>
         <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="price"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">数量:</div>
@@ -61,7 +61,8 @@ export default {
       name:'',
       ticketID:'',
       loading:true,
-      paySwitch:true
+      paySwitch:true,
+      title:''
     }
   },
   methods:{
@@ -107,6 +108,7 @@ export default {
   mounted: function () {
     this.$nextTick(function () {
       wxready(this,wx);
+      this.title = window.sessionStorage.title
       this.name=window.sessionStorage.name
       //window.sessionStorage.detailTxt
       this.price=window.sessionStorage.price

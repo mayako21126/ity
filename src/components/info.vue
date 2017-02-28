@@ -128,6 +128,7 @@
         setTimeout(function(){
           console.log(self.pay)
           self.pay.num=self.num;
+          window.sessionStorage.title = self.title;
           window.sessionStorage.name=self.pay.name
           window.sessionStorage.detailTxt=self.pay.detailTxt
           window.sessionStorage.price=self.pay.price
