@@ -53,7 +53,9 @@
     <div class="am-u-sm-12" style="height: 60px"></div>
     <div class="am-u-sm-12 footer" style="z-index: 1300">
       <div class="left" style="width: calc(100% - 112px)">
-        <span v-text="'¥'+price+'起'"></span>
+        <span v-if="orderSta" v-text="'共: ¥'+pay.price*num"></span>
+        <span v-text="'¥'+price+'起'" v-else=""></span>
+
       </div>
       <button class="am-btn right" style="width: 112px;z-index: 1400" data-am-modal="{target: '#my-alert'}" v-if="orderSta">
         <span  @click="orderStaChange">提交订单</span>
@@ -67,17 +69,20 @@
     <div class="am-modal-actions" tabindex="-1" id="my-alert" style="bottom: 60px;background-color: white">
       <div class="am-modal-actions-group" style="margin: 0px">
         <div>
-          <div class="am-modal-hd" >选择票种</div>
+          <div class="am-modal-hd" >
+            <span>选择票种</span>
+            <span v-text="'单价:'+pay.price+'元'" style="color: #ff5d38;float: right;"></span>
+          </div>
           <div class="am-modal-bd">
-            <button type="button" class="am-btn am-btn-default am-radius ticketType" v-bind:class="{'select-btn' : item.select}" v-for="(item,index) in ticket" v-text="item.name" @click="selectType(index,item.ticketID)"></button>
+            <button type="button" class="am-btn am-btn-default am-radius ticketType" v-bind:class="{'select-btn' : item.select}" v-for="(item,index) in ticket" v-text="item.name" v-tap="{methods:selectType,index:index}"></button>
           </div>
         </div>
         <div>
           <div class="am-modal-hd" >选择数量</div>
           <div class="am-modal-bd" style="padding-bottom: 40px;">
-            <button type="button" class="am-btn am-btn-danger num-btn" @click="minus">-</button>
+            <button type="button" class="am-btn am-btn-danger num-btn" v-tap="{methods:minus}">-</button>
             <input type="text" class="am-form-field am-radius num-input" v-model="num"/>
-            <button type="button" class="am-btn am-btn-danger num-btn" @click="plus">+</button>
+            <button type="button" class="am-btn am-btn-danger num-btn" v-tap="{methods:plus}">+</button>
           </div>
         </div>
 
@@ -122,7 +127,7 @@
     },
     methods: {
       orderStaChange: function () {
-        console.log('xxx')
+
         $('#my-alert').modal('close');
         var self = this ;
         setTimeout(function(){
@@ -141,7 +146,7 @@
 
       },
       minus: function () {
-        if(this.num > 0)
+        if(this.num > 1)
         this.num = this.num - 1;
       },
       plus: function () {
@@ -149,14 +154,17 @@
       },
       selectType:function(index,type){
         for(var i of this.ticket){
-          i.select= false
+          if(i.select==true){
+            i.select=false
+          }
+          i.select=false
         }
-        this.ticket[index].select = true;
-        this.pay.name=this.ticket[index].name;
-        this.pay.detailTxt=this.ticket[index].detailTxt;
-        this.pay.price=this.ticket[index].price;
-        this.pay.ticketID=this.ticket[index].ticketID;
-        this.pay.totalNum=this.ticket[index].totalNum;
+        this.ticket[index.index].select = true;
+        this.pay.name=this.ticket[index.index].name;
+        this.pay.detailTxt=this.ticket[index.index].detailTxt;
+        this.pay.price=this.ticket[index.index].price;
+        this.pay.ticketID=this.ticket[index.index].ticketID;
+        this.pay.totalNum=this.ticket[index.index].totalNum;
         this.pay.num=this.num;
       }
     },

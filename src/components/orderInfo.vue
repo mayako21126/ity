@@ -36,9 +36,9 @@
             style="position: absolute;bottom: -8px; left: calc(50% - 8px);right: calc(50% - 8px);"></span>
     </div>
     <div class="am-u-sm-12" style="padding-left: 20px;padding-right: 20px">
-      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid rgba(115, 115, 115, 0.6);">1.在线支付后你将得到电子票二维码，二维码唯一，到场后扫码作废。请保管好二维码，不要公开</div>
-      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid rgba(115, 115, 115, 0.6);">2.请在"i体验微信公众号-我的-票务"中查看您的二维码，也可作为二维码截图存入你的手机</div>
-      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;">3.本服务暂不支持退款</div>
+      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid rgba(115, 115, 115, 0.6);">1.在线支付后你将得到电子票二维码，二维码唯一，到场后扫码作废。请保管好二维码，不要公开。</div>
+      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid rgba(115, 115, 115, 0.6);">2.请在"i体验微信公众号-我的-票务"中查看您的二维码，也可作为二维码截图存入你的手机。</div>
+      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;">3.本服务暂不支持退款。</div>
     </div>
     <div class="am-u-sm-12 footer" style="z-index: 1300;background-color: #87c247;color: white;height: 60px;line-height: 60px;text-align: center">
        <a @click="pay" v-if="paySwitch" class="pay-a"> <span style="color: white;">微信安全支付</span></a>
@@ -90,7 +90,7 @@ export default {
         },
         function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            alert('支付成功')
+//            alert('支付成功')
             self.$router.push('pay')
           } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
             alert('用户取消支付')

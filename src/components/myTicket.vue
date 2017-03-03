@@ -1,13 +1,18 @@
 <template>
   <div class="am-g-collapse">
     <div class="am-u-sm-12"
-         style="text-align: center;height: 53px;line-height: 53px">
+         style="text-align: center;height: 53px;line-height: 53px;background-color: rgb(235, 235, 240);    position: fixed!important;
+    right: 0;
+    left: 0;
+    z-index: 10;">
 
-      <div>
+      <div style="background-color: rgb(255, 255, 255);color: #878cb0;">
+        <img src="../assets/i/ticketlogo.png" alt="" height="15px">
 我的票务
       </div>
     </div>
-    <div class="am-u-sm-12" style="padding: 20px;background-color: #ebebf0" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+    <div style="padding-top: 53px">
+    <div  style="padding: 20px;background-color: #ebebf0;min-height: calc(100vh - 53px);padding-bottom: 0px;" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <div v-for="(item,index) in ticketList" :class="{gray:item.invalid}" style="margin-bottom: 20px" >
         <img src="../assets/i/IMG_2748.png" alt="" width="100%" >
         <div style="width: 100%;height: 60px; background-color: rgba(0,0,0,0.5);bottom: 0px; position: relative;margin-top: -60px"
@@ -33,7 +38,7 @@
       </div>
 
     </div>
-
+    </div>
 
   </div>
 </template>
@@ -50,6 +55,11 @@
         noMore:false
       }
     },
+//    watch:{
+//      ticketList:function(val){
+//
+//      }
+//    },
     methods:{
       loadMore:function(){
         this.busy=true
@@ -61,34 +71,41 @@
           (successData)=>
         {
           console.log(successData)
-          this.busy=false;
-          if(successData.body.data.length==0){
-            this.noMore=true;
-            var self = this;
-            window.setTimeout(()=>{this.noMore=false},5000);
-            return false
-          }else{
-            this.noMore=false;
-          }
-          this.start=this.start+successData.body.data.length;
-          var data = successData.body.data;
-          this.total = successData.body.recordsTotal;
-          for(var i=0;i<data.length;i++){
-            data[i].invalid=false;
-            if(data[i].used==0){
-              data[i].invalid = true;
-            }
-            var d1 = new Date();
-            var d2 = new Date(data[i].DeadLine);
-            if(d1>d2){
-              data[i].invalid = true;
-              data[i].days ='已过期'
+          if(successData.body.draw=="1"){
+            this.busy=false;
+            if(successData.body.data.length==0){
+              this.noMore=true;
+              var self = this;
+              if(this.ticketList.length>5){
+                window.setTimeout(()=>{this.noMore=false},5000);
+              }
+              return false
             }else{
-              var date3 = d2 -d1;
-              data[i].days = Math.floor(date3/(24*3600*1000))+'天后结束';
+              this.noMore=false;
             }
-            this.ticketList.push(data[i])
+            this.start=this.start+successData.body.data.length;
+            var data = successData.body.data;
+            this.total = successData.body.recordsTotal;
+            for(var i=0;i<data.length;i++){
+              data[i].invalid=false;
+              if(data[i].Used==1){
+                data[i].invalid = true;
+              }
+              var d1 = new Date();
+              var d2 = new Date(data[i].DeadLine);
+              if(d1>d2){
+                data[i].invalid = true;
+                data[i].days ='已过期'
+              }else{
+                var date3 = d2 -d1;
+                data[i].days = Math.floor(date3/(24*3600*1000))+'天后结束';
+              }
+              this.ticketList.push(data[i])
+            }
+          }else{
+           // window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6f6347c7f7569287&redirect_uri=http://wx.lanhai-tech.com/login.html&response_type=code&scope=snsapi_userinfo&state=-1#wechat_redirect"
           }
+
 
 
         }
@@ -96,6 +113,7 @@
         (fileData)=>
         {
           console.log(fileData);
+
         }
         )
         ;

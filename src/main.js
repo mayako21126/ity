@@ -14,13 +14,16 @@ import './config/config'
 import {directRightUrl} from 'assets/js/app'
 import infiniteScroll from 'vue-infinite-scroll'
 import vueLoading from 'may-vue-loading'
+import vueTap from 'v-tap';
 //引入组件并使用2个模块
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(infiniteScroll)
 Vue.use(vueLoading)
+Vue.use(vueTap);
 Vue.http.options.emulateJSON = true
 Vue.http.options.emulateHTTP = true;
+
 
 //hash路由开启
 var router = new VueRouter({
