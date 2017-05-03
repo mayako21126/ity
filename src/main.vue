@@ -22,12 +22,16 @@
       border:1px solid sienna;
     };
   }
-b{
-  color: var(--mainColor);
-}
-  b {
-    background-color: var(--mainColor);
-    @apply --danger-theme;
+
+  b{
+    background-color: transparent;
+    border: none;
+
+  }
+  strong{
+    background-color: transparent;
+    border: none;
+
   }
 
 </style>

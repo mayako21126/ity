@@ -1,18 +1,16 @@
 <template>
   <div class="am-g-collapse">
     <div class="am-u-sm-12"
-         style="padding-top: 20px;padding-bottom: 20px;padding-left:20px;padding-right: 20px;margin-top: 80px;text-align: center">
+         style="padding-top: 20px;padding-bottom: 20px;padding-left:20px;padding-right: 20px;margin-top: 40px;text-align: center">
       <div id="qrcode" class="qrcode">
 
       </div>
     </div>
     <div class="am-u-sm-12">
-      <div style="margin-top: 40px">
-        <div class="tip" style="float: left;width: 100%;height: 30px;display: flex;
-align-items: center;
-justify-items: center;"> <span><img src="../assets/i/tip.png" width="16" alt="" style="z-index: 999;background-color: white"><label
+      <div style="margin-top: 30px;">
+        <div class="tip" style="text-align: center;width: 100%;height: 30px;"> <span><label
           for="">温馨提示</label></span></div>
-        <div style="padding-left: calc(60px + 9%);float: left;width: 100%;padding-right: 10%;font-size: 12px;color: #323232;" >
+        <div style="text-align: left;padding-bottom:20px;padding-left: 60px;float: left;width: 100%;padding-right: 60px;font-size: 12px;color: #323232;" >
           将二维码出示给现场工作人员，扫码后即可入场；此二维码唯一，请截图保管，或者关注i体验微信公众号查看哦～
 
         </div>
@@ -38,7 +36,7 @@ import qrCode from 'qrcode-npm'
     },
     mounted: function () {
       this.$nextTick(function () {
-        var qr =  window.sessionStorage.qr;
+        var qr =  window.sessionStorage.qr+'&&f=end';
         // var  qr = 'xx?a=11&&b=c8b18c68a148d4a5a34c16eb2e391535&&c=20170224160550&&d=oYCiswOTI6DiRV4mr4ulxPAUVwhM&&e=81'
         var typeNumber = 4;
         var errorCorrectionLevel = 'L';
@@ -90,7 +88,7 @@ import qrCode from 'qrcode-npm'
     color: #868bb3;
   }
   .tip span {
-    margin-left: 80px;
+
     color: #868bb3;
 
   }
@@ -100,21 +98,21 @@ import qrCode from 'qrcode-npm'
 
 
   .tip span:before, .tip span:after {
-    content: '';                 /*CSS伪类用法*/
-    position: absolute;         /*定位背景横线的位置*/
-    margin-top: 13px;
-    background: #868bb3;       /*宽和高做出来的背景横线*/
-    width: 9%;
-    height: 2px;
-    font-size: 16px;
-    color: #868bb3;
+    /*content: '';                 !*CSS伪类用法*!*/
+    /*position: absolute;         !*定位背景横线的位置*!*/
+    /*margin-top: 13px;*/
+    /*background: #868bb3;       !*宽和高做出来的背景横线*!*/
+    /*width: 9%;*/
+    /*height: 2px;*/
+    /*font-size: 16px;*/
+    /*color: #868bb3;*/
   }
   .tip span:before{
-    left: 40px;        /*调整背景横线的左右距离*/
+    /*left: 40px;        !*调整背景横线的左右距离*!*/
   }
   .tip span:after {
-    width: calc(100% - 205px);
-    margin-left: 5px;
+    /*width: calc(100% - 205px);*/
+    /*margin-left: 5px;*/
   }
 
   .footer .left {

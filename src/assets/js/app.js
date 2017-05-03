@@ -2,7 +2,7 @@
  * Created by mayako on 2017/2/22.
  */
 
-export const apis = "http://wx.lanhai-tech.com/";
+export const apis = "http://www.i-tiyan.cn/";
 export function getQueryString(name) {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
   var r = window.location.search.substr(1).match(reg);
@@ -38,7 +38,7 @@ export function wxready(self,wx) {
     res = res;
     wx.config({
       debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: 'wx6f6347c7f7569287', // 必填，公众号的唯一标识
+      appId: 'wxda66457a0679100e', // 必填，公众号的唯一标识
       timestamp: res.Timestamp, // 必填，生成签名的时间戳
       nonceStr: res.Noncestr, // 必填，生成签名的随机串
       signature: res.Sign,// 必填，签名，见附录1
@@ -47,7 +47,9 @@ export function wxready(self,wx) {
         'chooseWXPay',
         'chooseImage',
         'previewImage',
-        'uploadImage'
+        'uploadImage',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage'
       ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     wx.ready(function () {

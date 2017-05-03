@@ -13,7 +13,7 @@
             style="position: absolute;bottom: -8px; left: calc(50% - 8px);right: calc(50% - 8px);"></span>
     </div>
     <div class="am-u-sm-12" style="padding-top: 20px;padding-bottom: 20px;padding-left:20px;padding-right: 20px;">
-      <div style="font-size: 14px;color: #323232;width: 100%;border-bottom: 1px solid rgba(115, 115, 115, 0.6);height: 106px;">
+      <div style="font-size: 14px;color: #323232;width: 100%;border-bottom: 1px solid #ececec;height: 106px;">
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">名称:</div>
         <div style="float: left;width: calc( 100% - 36px );height: 24px;padding-bottom: 10px" v-text="title"></div>
         <div style="float: left;width: 36px;height: 24px;padding-bottom: 10px">票种:</div>
@@ -36,8 +36,8 @@
             style="position: absolute;bottom: -8px; left: calc(50% - 8px);right: calc(50% - 8px);"></span>
     </div>
     <div class="am-u-sm-12" style="padding-left: 20px;padding-right: 20px">
-      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid rgba(115, 115, 115, 0.6);">1.在线支付后你将得到电子票二维码，二维码唯一，到场后扫码作废。请保管好二维码，不要公开。</div>
-      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid rgba(115, 115, 115, 0.6);">2.请在"i体验微信公众号-我的-票务"中查看您的二维码，也可作为二维码截图存入你的手机。</div>
+      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid #ececec;">1.在线支付后你将得到电子票二维码，二维码唯一，到场后扫码作废。请保管好二维码，不要公开。</div>
+      <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;border-bottom: 1px solid #ececec;">2.请在"i体验微信公众号-我的-票务"中查看您的二维码，也可作为二维码截图存入你的手机。</div>
       <div style="padding-top:20px;padding-bottom:20px;color: #323232;font-size: 14px;">3.本服务暂不支持退款。</div>
     </div>
     <div class="am-u-sm-12 footer" style="z-index: 1300;background-color: #87c247;color: white;height: 60px;line-height: 60px;text-align: center">
@@ -45,7 +45,6 @@
       <a v-else="" class="pay-a" style="    background-color: gainsboro;"> <span style="color: white;">微信安全支付</span></a>
     </div>
     </div>
-
 
   </div>
 </template>
@@ -158,7 +157,7 @@ export default {
   span {
     @apply --danger-theme;
   }
-  #center{width:84px; height:84px;position:absolute;top:50%;left:50%; margin:-42px 0 0 -42px; }
+  #center{width:42px; height:42px;position:absolute;top:50%;left:50%; margin:-21px 0 0 -21px; }
   .select-btn{
     background-color: #ff5d38;
     border-color: #ff5d38;

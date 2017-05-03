@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "v-tap": "^2.2.2",
+    "flexboxgrid": "^6.3.1",
     "vue": "^2.1.0"
   },
   "devDependencies": {
@@ -39,7 +40,9 @@
     "http-proxy-middleware": "^0.17.2",
     "jquery": "^2.2.3",
     "json-loader": "^0.5.4",
-    "may-vue-loading": "^1.0.0",
+    "may-vue-alert": "^1.0.0",
+    "may-vue-loading": "^1.2.0",
+    "mint-ui": "^2.2.5",
     "mockjs": "^1.0.1-beta3",
     "opn": "^4.0.2",
     "ora": "^0.3.0",

@@ -10,7 +10,7 @@
         <button type="button" class="am-btn qr-btn am-radius"><router-link to="myTicket" style="color: white;">点击查看票务</router-link></button>
       </div>
       <div style="margin-top: 40px;text-align: center;font-size: 12px;color: #323232;">
-        如果您离开此页面<br>可以通过关注公众号i体验来找到二维码。
+        如果您离开此页面<br>可以通过关注公众号i体验来找到二维码
       </div>
 
 

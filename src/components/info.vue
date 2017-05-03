@@ -44,13 +44,13 @@
                                                                                           style="float: right"
                                                                                           v-text="'¥'+item.price"></span>
         </div>
-        <div style="padding-bottom: 10px;border-bottom: 1px solid rgba(115,115,115,0.5);float: left;width: 100%">
+        <div style="padding-bottom: 10px;border-bottom: 1px solid #ececec;float: left;width: 100%">
           <span class="ticketContent" style="float: left" v-text="item.detailTxt"></span>
         </div>
       </div>
 
     </div>
-    <div class="am-u-sm-12" style="height: 60px"></div>
+    <div class="am-u-sm-12" style="height: 50px"></div>
     <div class="am-u-sm-12 footer" style="z-index: 1300">
       <div class="left" style="width: calc(100% - 112px)">
         <span v-if="orderSta" v-text="'共: ¥'+pay.price*num"></span>
@@ -66,7 +66,7 @@
 
 
     </div>
-    <div class="am-modal-actions" tabindex="-1" id="my-alert" style="bottom: 60px;background-color: white">
+    <div class="am-modal-actions" tabindex="-1" id="my-alert" style="bottom: 50px;background-color: white">
       <div class="am-modal-actions-group" style="margin: 0px">
         <div>
           <div class="am-modal-hd" >
@@ -93,7 +93,16 @@
 
 <script type="text/babel">
   import $ from 'jquery'
-  import { apis } from '../assets/js/app'
+  import wx from 'weixin-js-sdk'
+  import { wxready,apis } from '../assets/js/app'
+  function removeHTMLTag(str) {
+    str = str.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+    str = str.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+    //str = str.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+    str=str.replace(/&nbsp;/ig,'');//去掉&nbsp;
+    str=str.replace(/\s/g,''); //将空格去掉
+    return str;
+  }
   console.log(apis)
 
   export default {
@@ -170,6 +179,7 @@
     },
     mounted: function () {
       this.$nextTick(function () {
+        wxready(this,wx);
         var id=this.$route.query.id||28
         this.$http.post(apis+'api_user.aspx', {'type': 1001,'ExhibitionID':id}).then(
           (successData)=>
@@ -205,6 +215,34 @@
           this.pay.ticketID=this.ticket[0].ticketID;
           this.pay.totalNum=this.ticket[0].totalNum;
           this.pay.num=this.num;
+          var self = this;
+          wx.ready(function(){
+            wx.onMenuShareTimeline({
+              title: self.title, // 分享标题
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxda66457a0679100e&redirect_uri=http://www.i-tiyan.cn/login.html&response_type=code&scope=snsapi_userinfo&state='+id+'#wechat_redirect', // 分享链接
+              imgUrl: self.imgList[0].src, // 分享图标
+              success: function () {
+                // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+                // 用户取消分享后执行的回调函数
+              }
+            });
+            wx.onMenuShareAppMessage({
+              title: self.title, // 分享标题
+              desc: self.titleInfo, // 分享描述
+              link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxda66457a0679100e&redirect_uri=http://www.i-tiyan.cn/login.html&response_type=code&scope=snsapi_userinfo&state='+id+'#wechat_redirect', // 分享链接
+              imgUrl:  self.imgList[0].src, // 分享图标
+              type: '', // 分享类型,music、video或link，不填默认为link
+              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+              success: function () {
+                // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+                // 用户取消分享后执行的回调函数
+              }
+            });
+          });
         }
         ,
         (fileData)=>
@@ -241,7 +279,16 @@
   a {
     color: var(--mainColor);
   }
-
+  b{
+    background-color: transparent;
+    border: none;
+    color: #000;
+  }
+  strong{
+    background-color: transparent;
+    border: none;
+    color: #000;
+  }
   span {
     @apply --danger-theme;
   }
@@ -302,7 +349,7 @@
   .footer {
     position: fixed;
     bottom: 0px;
-    height: 60px;
+    height: 50px;
     background-color: #323232;
     color: white;
   }
@@ -310,7 +357,7 @@
   .footer .left {
     float: left;
     height: 100%;
-    line-height: 60px;
+    line-height: 50px;
     color: white;
     text-align: left;
   }
@@ -324,7 +371,7 @@
   .footer .right {
     float: left;
     height: 100%;
-    line-height: 42px;
+    line-height: 19.2px;
     background-color: #ff5d38;
     text-align: center;
   }
@@ -363,13 +410,14 @@
     position: absolute;
     height: 20px;
     width: 40px;
+    color:#bbbbbb;
     text-align: center;
-    line-height: 16px;
+    line-height: 18px;
     margin-left: 10px;
     font-size: 13px;
     margin-top: 10px;
-    background-color: rgba(55, 55, 55, 0.6);
-    border: 1px solid rgba(55, 55, 55, 0.6);
+    background-color: rgba(0, 0,0, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.6);
   }
 
   #slides img {
